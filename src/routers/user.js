@@ -2,6 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
 const User = require('../models/user')
+const Pot = require('../models/pot')
 const auth = require('../middleware/auth')
 const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const router = new express.Router()
@@ -53,6 +54,9 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 router.get('/users/me', auth, async (req, res) => {
+    Pot.countDocuments({ owner: req.user_id }, function (err, count) {
+        console.log('there are %d pots', count);
+      });
     res.send(req.user)
 })
 
@@ -76,11 +80,12 @@ router.patch('/users/me', auth, async (req, res) => {
 
 router.delete('/users/me', auth, async (req, res) => {
     try {
-        await req.user.remove()
+        console.log(req.user)
+        req.user.remove()
         sendCancelationEmail(req.user.email, req.user.name)
         res.send(req.user)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 })
 

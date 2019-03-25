@@ -23,7 +23,7 @@ router.post('/orders/:id', auth, async (req, res) => {
 // GET /tasks?completed=true
 // GET /tasks?limit=10&skip=20
 // GET /tasks?sortBy=createdAt:desc
-router.get('/pots/me', auth, async (req, res) => {
+router.get('/orders/me', auth, async (req, res) => {
     const match = {}
     const sort = {}
 
@@ -64,18 +64,18 @@ router.get('/orders/:id', auth, async (req, res) => {
     }
 })
 
-router.delete('/order/:id', auth, async (req, res) => {
-    try {
-        const order = await Order.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
+// router.delete('/order/:id', auth, async (req, res) => {
+//     try {
+//         const order = await Order.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 
-        if (!pot) {
-            res.status(404).send()
-        }
+//         if (!pot) {
+//             res.status(404).send()
+//         }
 
-        res.send(pot)
-    } catch (e) {
-        res.status(500).send()
-    }
-})
+//         res.send(pot)
+//     } catch (e) {
+//         res.status(500).send()
+//     }
+// })
 
 module.exports = router

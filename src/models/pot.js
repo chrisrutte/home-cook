@@ -28,11 +28,11 @@ const Pot = mongoose.model('Pot', potSchema)
 
 module.exports = Pot
 
-potSchema.virtual('orders', {
-    ref: 'Order',
-    localField: '_id',
-    foreignField: 'pot'
-})
+// potSchema.virtual('orders', {
+//     ref: 'Order',
+//     localField: '_id',
+//     foreignField: 'pot'
+// })
 
 // address
 // price

@@ -30,16 +30,19 @@ router.get('/pots/me', auth, async (req, res) => {
     }
 
     try {
-        await req.user.populate({
-            path: 'pots',
-            match,
-            options: {
-                limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip),
-                sort
-            }
-        }).execPopulate()
-        res.send(req.user.pots)
+        // await req.user.populate({
+        //     path: 'pots',
+        //     match,
+        //     options: {
+        //         limit: parseInt(req.query.limit),
+        //         skip: parseInt(req.query.skip),
+        //         sort
+        //     }
+        // }).execPopulate()
+        await req.user.populate('pots').execPopulate()
+        // req.user.populate('pots')
+        console.log(req.user)
+        res.send(req.user)
     } catch (e) {
         res.status(500).send(e)
     }
@@ -62,7 +65,7 @@ router.get('/pots/', async (req, res) => {
     }
 })
 
-router.get('/pots/:id', auth, async (req, res) => {
+router.get('/pots/:id', async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -79,6 +82,7 @@ router.get('/pots/:id', auth, async (req, res) => {
 })
 
 router.patch('/pots/:id', auth, async (req, res) => {
+    // only allow if there are no orders yet
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed']  // revise bases on params
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -103,6 +107,7 @@ router.patch('/pots/:id', auth, async (req, res) => {
 })
 
 router.delete('/pots/:id', auth, async (req, res) => {
+    // only allow if there are no orders
     try {
         const pot = await Pot.findOneAndDelete({ _id: req.params.id, owner: req.user._id })
 
