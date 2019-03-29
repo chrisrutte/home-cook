@@ -6,7 +6,7 @@ const potSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    mealCount: {
+    maxMeals: {
         type: Number,
         required: true,
         default: 0
@@ -14,6 +14,18 @@ const potSchema = new mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    date: {
+        type: Date,
+        required: true
+    },
+    orderDeadline: {
+        type: Number,
+        required: true
+    },
+    pickupDeadline: {
+        type: Number,
+        required: true
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,18 +36,21 @@ const potSchema = new mongoose.Schema({
     timestamps: true
 })
 
+potSchema.virtual('orders', {
+    ref: 'Order',
+    localField: '_id',
+    foreignField: 'pot'
+})
+
 const Pot = mongoose.model('Pot', potSchema)
 
 module.exports = Pot
 
-// potSchema.virtual('orders', {
-//     ref: 'Order',
-//     localField: '_id',
-//     foreignField: 'pot'
-// })
-
 // address
 // price
 // date
-// pick up start
-// pick up end
+// pickupStart
+// pickupEnd
+// active
+// lastOrder
+

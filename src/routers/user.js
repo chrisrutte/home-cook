@@ -54,10 +54,13 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 router.get('/users/me', auth, async (req, res) => {
-    Pot.countDocuments({ owner: req.user_id }, function (err, count) {
-        console.log('there are %d pots', count);
-      });
-    res.send(req.user)
+    // Pot.countDocuments({ owner: req.user._id }, function (err, count) {
+    //     console.log('there are %d pots', count);
+    // });
+
+    // await req.user.populate('potCount').execPopulate()
+
+    res.send(req.user.potCount)
 })
 
 router.patch('/users/me', auth, async (req, res) => {
@@ -80,7 +83,6 @@ router.patch('/users/me', auth, async (req, res) => {
 
 router.delete('/users/me', auth, async (req, res) => {
     try {
-        console.log(req.user)
         req.user.remove()
         sendCancelationEmail(req.user.email, req.user.name)
         res.send(req.user)

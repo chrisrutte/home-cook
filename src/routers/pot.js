@@ -39,10 +39,15 @@ router.get('/pots/me', auth, async (req, res) => {
         //         sort
         //     }
         // }).execPopulate()
-        await req.user.populate('pots').execPopulate()
-        // req.user.populate('pots')
-        console.log(req.user)
-        res.send(req.user)
+        // await req.user.populate('pots').execPopulate()
+        // await req.user.pots.populate('orders').execPopulate()
+
+        await req.user.populate({
+            path: 'pots',
+            // Get friends of friends - populate the 'friends' array for every friend
+            populate: { path: 'orders' }
+        }).execPopulate()
+        res.send(req.user.pots)
     } catch (e) {
         res.status(500).send(e)
     }

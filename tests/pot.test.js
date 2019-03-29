@@ -58,3 +58,5 @@ test('Should only update own pots', async () => {
 })
 
 // should only delete pots when no orders
+// should not create pots in the past
+// if past and future pots endpoints, check if they pick the right orders

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
-    mealCount: {
+    numMeals: {
         type: Number,
         required: true,
         default: 0
@@ -13,10 +13,9 @@ const orderSchema = new mongoose.Schema({
     },
     pickupTime: {
         type: Number,
-        required: true,
-        ref: 'Pot'
+        required: true
     },    
-    owner: {
+    customer: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
@@ -31,3 +30,4 @@ module.exports = Order
 
 // mealCount
 // pickupTime
+// paid: failed, pending, success
