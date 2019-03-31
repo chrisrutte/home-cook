@@ -69,6 +69,7 @@ test('Should delete account for user', async () => {
     // console.log(await User.find())
     // console.log(await User.findById(userOneId))
     // expect(user).toBeNull()
+    console.log(await User.find())
     expect(await User.findById(userOneId)).toBeNull()
 
 })

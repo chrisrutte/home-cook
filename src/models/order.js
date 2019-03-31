@@ -19,15 +19,22 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User'
+    },
+    paymentStatus: {
+        type: String,
+        required: true,
+        default: 'pending'      
     }
 }, {
     timestamps: true
 })
 
+orderSchema.virtual('transactions', {
+    ref: 'Transaction',
+    localField: '_id',
+    foreignField: 'order'
+})
+
 const Order = mongoose.model('Order', orderSchema)
 
 module.exports = Order
-
-// mealCount
-// pickupTime
-// paid: failed, pending, success

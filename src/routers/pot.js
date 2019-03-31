@@ -3,11 +3,32 @@ const Pot = require('../models/pot')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
+const calcAvailableMeals = require('../lib/calcAvailableMeals')
+
 router.post('/pots', auth, async (req, res) => {
+
+    const orderDeadline = new Date(req.body.orderDeadlineDate).setHours(req.body.orderDeadlineHour)
+    const pickupDeadline = new Date(req.body.pickupDeadlineDate).setHours(req.body.pickupDeadlineHour)
+    
     const pot = new Pot({
-        ...req.body,
+        // ...req.body,
+        name: req.body.name,
+        maxMeals: req.body.maxMeals,
+        price: req.body.price,
+        orderDeadline,
+        pickupDeadline,
         owner: req.user._id
     })
+
+    // only allow posting before the pickup deadline
+    if (new Date().getTime() > pot.orderDeadline) {
+        return res.status(400).send({ error: 'Make sure your order deadline is in the past' })
+    }
+
+    // only allow post when pickup deadline is after order deadline
+    if (pot.pickupDeadline < pot.orderDeadline) {
+        return res.status(400).send({ error: 'Make sure your pickup deadline is after your order deadline' })
+    }
 
     try {
         await pot.save()
@@ -20,8 +41,16 @@ router.post('/pots', auth, async (req, res) => {
 // GET /tasks?completed=true
 // GET /tasks?limit=10&skip=20
 // GET /tasks?sortBy=createdAt:desc
+// GET /pots?time=past
 router.get('/pots/me', auth, async (req, res) => {
+    
     const match = {}
+    if (req.query.time === 'past') {
+        match['date'] = { $lte: new Date()}
+    } else if (req.query.time === 'future') {
+        match['date'] = { $gte: new Date()}
+    }
+
     const sort = {}
 
     if (req.query.sortBy) {
@@ -42,12 +71,31 @@ router.get('/pots/me', auth, async (req, res) => {
         // await req.user.populate('pots').execPopulate()
         // await req.user.pots.populate('orders').execPopulate()
 
+        // Add number of paid and pending meals
+
         await req.user.populate({
             path: 'pots',
-            // Get friends of friends - populate the 'friends' array for every friend
+            match,
+            options: {
+                        limit: parseInt(req.query.limit),
+                        skip: parseInt(req.query.skip),
+                        sort
+                    },
             populate: { path: 'orders' }
         }).execPopulate()
-        res.send(req.user.pots)
+
+        const result = req.user.pots.map(async (pot) => {
+            const availableMeals = await calcAvailableMeals(pot._id)
+            pot._doc.availableMeals = availableMeals
+            pot._doc.orders = pot.orders // not ideal but only way for now to populate orders in final response 
+            return pot            
+        })
+
+        console.log(req.user.pots[0].orders)
+        
+        // 
+        Promise.all(result).then((completed) => res.send(req.user.pots))
+        
     } catch (e) {
         res.status(500).send(e)
     }

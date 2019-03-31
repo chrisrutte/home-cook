@@ -3,6 +3,7 @@ require('./db/mongoose')
 const userRouter = require('./routers/user')
 const potRouter = require('./routers/pot')
 const orderRouter = require('./routers/order')
+const transactionRouter = require('./routers/transaction')
 
 // const User = require('./models/user')
 // const Pot = require('./models/pot')
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use(userRouter)
 app.use(potRouter)
 app.use(orderRouter)
+app.use(transactionRouter)
 
 app.listen(port, () => {
     console.log('Server is up on port ' + port)
@@ -37,7 +39,3 @@ app.listen(port, () => {
 //     // 
 // }
 
-// const test = availableMeals(potId)
-// console.log("index.js test: " + test)
-
-console.log(new Date)

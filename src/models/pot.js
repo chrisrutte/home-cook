@@ -15,15 +15,15 @@ const potSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    date: {
-        type: Date,
-        required: true
-    },
     orderDeadline: {
         type: Number,
         required: true
     },
     pickupDeadline: {
+        type: Number,
+        required: true
+    },
+    price: {
         type: Number,
         required: true
     },

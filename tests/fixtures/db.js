@@ -40,52 +40,61 @@ const userThree = {
 const potOne = {
     _id: new mongoose.Types.ObjectId(),
     description: 'First pot',
-    date: new Date(),
     name: "Burger and chips",
     owner: userOne._id,
-    maxMeals: 15
+    maxMeals: 15,
+    price: 40,
+    orderDeadline: new Date().getTime() + 1000,
+    pickupDeadline: new Date().getTime() + 2000
 }
 
 const potTwo = {
     _id: new mongoose.Types.ObjectId(),
     description: 'Second pot',
-    date: new Date(),   
     name: "Bobotie",
     owner: userOne._id,
-    maxMeals: 10
+    maxMeals: 10,
+    price: 40,
+    orderDeadline: new Date().getTime() + 1000,
+    pickupDeadline: new Date().getTime() + 2000    
 }
 
 const potThree = {
     _id: new mongoose.Types.ObjectId(),
-    date: new Date(),       
     description: 'Third pot',
     name: "Bobotie",
     owner: userTwo._id,
-    maxMeals: 20
+    maxMeals: 20,
+    price: 40,
+    orderDeadline: new Date().getTime() + 1*1000*60*60,
+    pickupDeadline: new Date().getTime() + 2*1000*60*60
 }
 
 const orderOne = {
     _id: new mongoose.Types.ObjectId(),
     pot: potOne._id,
     customer: userTwo._id,
-    pickupTime: 12,
-    numMeals: 3
+    pickupTime: new Date().getTime() + 1.5*1000*60*60,
+    numMeals: 3,
+    paymentStatus: 'pending'
 }
 
 const orderTwo = {
     _id: new mongoose.Types.ObjectId(),
     pot: potOne._id,
     customer: userTwo._id,
-    pickupTime: 12,
-    numMeals: 3
+    pickupTime: new Date().getTime() + 1.5*1000*60*60,
+    numMeals: 3,
+    paymentStatus: 'pending'
 }
 
 const orderThree = {
     _id: new mongoose.Types.ObjectId(),
     pot: potTwo._id,
     customer: userTwo._id,
-    pickupTime: 15,
-    numMeals: 3
+    pickupTime: new Date().getTime() + 1.5*1000*60*60,
+    numMeals: 3,
+    paymentStatus: 'pending'
 }
 
 const orderFour = {
