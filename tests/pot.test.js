@@ -21,7 +21,10 @@ test('Should create pot for user', async () => {
         .send({
             mealCount: 14,
             name: "Pizza",
-            description: "Lekker eet"
+            description: "Lekker eet",
+            price: 40,
+            orderDeadline: new Date().getTime() + 1*1000*60*60,
+            pickupDeadline: new Date.getTime() + 2*1000*60*60()
         })
         .expect(201)
     const pot = await Pot.findById(response.body._id)
