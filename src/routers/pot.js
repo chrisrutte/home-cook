@@ -90,10 +90,7 @@ router.get('/pots/me', auth, async (req, res) => {
             pot._doc.orders = pot.orders // not ideal but only way for now to populate orders in final response 
             return pot            
         })
-
-        console.log(req.user.pots[0].orders)
-        
-        // 
+       
         Promise.all(result).then((completed) => res.send(req.user.pots))
         
     } catch (e) {

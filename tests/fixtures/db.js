@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../../src/models/user')
 const Pot = require('../../src/models/pot')
 const Order = require('../../src/models/order')
+const moment = require('moment')
 
 const userOneId = new mongoose.Types.ObjectId()
 const userOne = {
@@ -44,8 +45,8 @@ const potOne = {
     owner: userOne._id,
     maxMeals: 15,
     price: 40,
-    orderDeadline: new Date().getTime() + 1000,
-    pickupDeadline: new Date().getTime() + 2000
+    orderDeadline: moment().add(2, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0}),
+    pickupDeadline: moment().add(3, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0})
 }
 
 const potTwo = {
@@ -55,8 +56,8 @@ const potTwo = {
     owner: userOne._id,
     maxMeals: 10,
     price: 40,
-    orderDeadline: new Date().getTime() + 1000,
-    pickupDeadline: new Date().getTime() + 2000    
+    orderDeadline: moment().add(2, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0}),
+    pickupDeadline: moment().add(3, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0})   
 }
 
 const potThree = {
@@ -66,8 +67,8 @@ const potThree = {
     owner: userTwo._id,
     maxMeals: 20,
     price: 40,
-    orderDeadline: new Date().getTime() + 1*1000*60*60,
-    pickupDeadline: new Date().getTime() + 2*1000*60*60
+    orderDeadline: moment().add(-3, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0}),
+    pickupDeadline: moment().add(-2, 'h').set({'minutes': 0, 'seconds': 0, 'milliseconds': 0})
 }
 
 const orderOne = {

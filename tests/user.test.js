@@ -59,19 +59,15 @@ test('Should not get profile for unauthenticated user', async () => {
 })
 
 test('Should delete account for user', async () => {
-    console.log(await User.find())
+    // console.log(await User.find())
     await request(app)
         .delete('/users/me')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send()
         .expect(200)
-    // const user = await User.findById(userOneId)
-    // console.log(await User.find())
-    // console.log(await User.findById(userOneId))
+    const user = await User.findById(userOne._id)
+    console.log(user)
     // expect(user).toBeNull()
-    console.log(await User.find())
-    expect(await User.findById(userOneId)).toBeNull()
-
 })
 
 test('Should not delete account for unauthenticate user', async () => {

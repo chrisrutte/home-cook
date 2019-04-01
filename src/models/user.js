@@ -67,14 +67,6 @@ userSchema.virtual('orders', {
     foreignField: 'customer'
 })
 
-
-// userSchema.virtual('potCount', {
-//     ref: 'Pot',
-//     localField: '_id',
-//     foreignField: 'owner',
-//     count: true
-// })
-
 userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
