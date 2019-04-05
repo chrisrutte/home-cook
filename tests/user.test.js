@@ -66,7 +66,6 @@ test('Should delete account for user', async () => {
         .send()
         .expect(200)
     const user = await User.findById(userOne._id)
-    console.log(user)
     // expect(user).toBeNull()
 })
 
